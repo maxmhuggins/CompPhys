@@ -1,0 +1,350 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[version=4]{mhchem}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage{wrapfig}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{color}
+\usepackage[final]{pdfpages}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+
+
+\begin{document}
+
+\title{Characterizing a Cold Gas Thruster System}
+\author{Max Huggins – UCA Department of Physics and Astronomy}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+A cold gas thruster (CGT) system was designed with pre-existing nozzle theory in mind. This paper deals with characterizing the system and provides an analysis of the force production for it. It was found that the CGT performed similarly to the predicted theory, but the data collected was not sufficient to characterize the system as was previously expected. This required the use of a more general analysis scheme.
+\end{abstract}
+\section{Overview and Theory}
+\subsection{Harmonic Oscillator}
+When discussing potential functions in quantum mechanics one of the first that can be solved for is the harmonic oscillator potential. The reason for this is that really \textit{any} potential function is approximately parabolic about a local minimum. The justification for this is that given any arbitrary potential function:
+\begin{equation}
+    V(x)
+\end{equation}
+it can be expanded about a minimum, $X_0$, using the Taylor series:
+\begin{equation}
+    V(x)=V(x_0)+V'(x_0)(x-x_0)+\frac{1}{2}V''(x_0)(x-x_0)^2+(\Theta)^{3+}
+\end{equation}
+where $(\Theta)^{3+}$ are terms of order 3 or higher. Whenever x is close to the local minimum, $x_0$ we can see that the higher order terms will fall out. Also, the term $V(x_0)$ can be subtracted from V(x) and cause no difference to the function because the force is given by the change in the potential. We are left with:
+\begin{equation}
+    V(x)\approx\frac{1}{2}V''(x_0)(x-x_0)^2
+\end{equation}
+This shows that, so long as we are close to a local minimum, \textit{any} oscillatory motion is approximately simple harmonic when the amplitude is small!\newline
+Now, we can rewrite this potential function in terms of constants that are useful for us:
+\begin{equation}
+    V(x)=\frac{1}{2}k_fx^2
+\end{equation}
+There are two prominent methods for solving the time independent Schr\"{o}dinger equation (TISE). The first is called the analytic method (or rather, the bonehead method) the second is called the algebraic method (or rather, the slick method). While the first is more robust and can be applied to several different types of potential functions, it is clunky and cumbersome. The algebraic method was developed by Paul Dirac, widely known as the prophet of physics. It uses what is referred to as ladder operators and they allow for incredibly light solutions to proofs, derivations, and of course the solution to the TISE. For the scope of this report I will not derive the allowed energies of the harmonic oscillator, they are simply given below:
+\begin{equation}
+    E_\nu=(\nu+\frac{1}{2})\hbar\omega
+\end{equation}
+where $\nu$ takes values: 0,1,2,...\newline
+It is easily recognized, the spacing between each adjacent energy level ($\nu$ and $\nu+1$) is given by:
+\begin{equation}
+    E_{\nu+1}-E_{\nu}=\hbar\omega
+\end{equation}
+This tells us that the spacing between these energy levels does not change. In terms of molecules we can immediately notice that this potential function will not be a satisfactory fit. This is because the molecules will never escape a parabolic potential, but in reality it is clear the bonds between them can be broken and therefore they can escape the potential boundary. In figure \ref{figure 1} I have included a sketch of the harmonic oscillator potential function at various $k_f$ multiples along with the first five energy levels for the $k_fx1$ state.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{Sketch_harmonic.png}
+\caption{Sketch of the harmonic oscillator potential.}
+\label{figure 1}
+\end{figure}\newline
+The vibrational energy levels are given to be $\Tilde{G}(\nu)$ where:
+\begin{equation}
+    E_\nu=hc\Tilde{G}(\nu)
+\end{equation}
+Setting this equal with the energy levels of the harmonic oscillator we find that a new constant arises when solving for $\Tilde{G}(\nu)$:
+\begin{equation}
+    (\nu+\frac{1}{2})\hbar\omega=hc\Tilde{G}(\nu)
+\end{equation}
+If we redefine $\frac{\omega}{2\pi c}$ to be $\Tilde{\nu}$ we can write the energy levels as:
+\begin{equation}
+    \Tilde{G}(\nu)=(\nu+\frac{1}{2})\Tilde{\nu}
+    \label{equation 9}
+\end{equation}
+\subsection{Morse Potential}
+While the Morse potential is largely based on empirical results, there have been papers that discuss its theoretical significance and have derived such from first principles [1]. These theoretical justifications are outside the scope of this report so the potential function will be given below:
+\begin{equation}
+    V(r)=hc\Tilde{D_e}(1-e^{-a(r-r_e)})^2
+\end{equation}
+where:
+\begin{equation}
+    a=\left(\frac{m_{eff}\omega^2}{2hc\Tilde{D}_e}\right)^{1/2}
+\end{equation}
+From this, the allowed energies are given as:
+\begin{equation}
+    \Tilde{G}(\nu)=(\nu+\frac{1}{2})\Tilde{\nu}-(\nu+\frac{1}{2})^2\Tilde{\nu}\chi_e
+\end{equation}
+where:
+\begin{equation}
+    \chi_e=\frac{\Tilde{\nu}}{4\Tilde{D}_e}
+\end{equation}
+\begin{tcolorbox}[breakable,title=Units, height fixed for=first and middle]
+At this point I would like to digress slightly to discuss the units of these functions and how they are represented.\newline
+In Atkins' text, Physical Chemistry: Thermodynamics, Structure, and Change he introduces Morse potential as:
+\begin{equation}
+    V=hc\Tilde{D}_e\{1-e^{-a(R-R_e)}\}^2
+    \label{equation 14}
+\end{equation}
+where:
+\begin{equation}
+    a=\left(\frac{m_{eff}\omega^2}{2hc\Tilde{D}_e}\right)^{1/2}.
+\end{equation}
+Also, he provides:
+\begin{equation}
+    \Tilde{D}_o=\Tilde{D}_e-\frac{1}{2}\Tilde{\nu}
+    \label{equation 16}
+\end{equation}
+Then, he proceeds to provide a "resource" table that includes values as such:
+\begin{table}[H]
+\centering
+\begin{tabular}{cccccc}
+\rowcolor[HTML]{C0C0C0} 
+                              & $\Tilde{\nu}/cm^{-1}$ & $R_e/pm$ & $\Tilde{B}/cm^{-1}$ & $k_f/(N/m)$ & $hc\Tilde{D}_o/(kJ/mol)$ \\
+\rowcolor[HTML]{EFEFEF} 
+\cellcolor[HTML]{C0C0C0}$H_2$ & 4400                & 74    & 60.86             & 575         & 432                      \\
+\rowcolor[HTML]{EFEFEF} 
+\cellcolor[HTML]{C0C0C0}$HCl$ & 2991                & 127   & 10.59             & 516         & 428                      \\
+\rowcolor[HTML]{EFEFEF} 
+\cellcolor[HTML]{C0C0C0}…     & …                   & …     & …                 & …           & …                       
+\end{tabular}
+\caption{Highly suggestive use of a slash to display the units... quite unusual!}
+\label{table 1}
+\end{table}
+Unfortunately for the reader, these units are \textit{not} compatible in equation \ref{equation 14}. In fact, he provides $hc\Tilde{D}_o$, where the function requires $hc\Tilde{D}_e$. Additionally, he does not provide the units of the values for this function.\newline
+Allow us to do a dimensional analysis of this potential function, equation \ref{equation 14}, using the units provided in the table. Beginning with the exponent, since we know this must be a unitless quantity. We also know that $R_e$ is in pm (from Table \ref{table 1}). This means we are hoping a is given to be 1/pm. (I will assume SI units for values not provided)
+\begin{equation}
+    a=\left(\frac{m_{eff}\omega^2}{2hc\Tilde{D}_e}\right)^{1/2}:\left(\frac{kg*kg*m*s*s}{m*s^2*kg*m^2*kg*m*\Tilde{D}_e}\right)^{1/2}
+\end{equation}
+We have run into a problem, $\Tilde{D}_e$ is not given a unit in the text. We shall use $hc\Tilde{D}_o$ to determine what the units will be on $\Tilde{D}_e$. We know the conversion is given by equation \ref{equation 16}, but this is for $\Tilde{\nu}$ values which are given to be $cm^{-1}$. This means that we must convert one of the two to match the other's units. I'll choose to convert $hc\Tilde{D}_o$ to $cm^{-1}$. Luckily, he provides a conversion for this as it is quite a lengthy process from scratch. It includes division of h*c, converting kJ to J, converting moles to molecules, and m to cm. Anyways, the conversion is given as:
+\begin{equation}
+    83.593cm^{-1}=1\frac{kJ}{mol}:
+\end{equation}
+This also destroys the hc term, so:
+\begin{equation}
+    hc\Tilde{D}_o(1\frac{kJ}{mol})*83.593(cm^{-1})=\Tilde{D}_o(cm^{-1})
+\end{equation}
+We can now apply equation \ref{equation 16}:
+\begin{equation}
+    \Tilde{D}_e=\Tilde{D}_o(cm^{-1})+\frac{1}{2}\Tilde{\nu}(cm^{-1})
+\end{equation}
+At the end of this we have a $\Tilde{D}_e$ value in units $cm^{-1}$. Continuing the analysis:
+\begin{equation}
+    \left(\frac{kg*kg*m*s*s}{m*s^2*kg*m^2*kg*m*cm^{-1}}\right)^{1/2}
+\end{equation}
+reducing...
+\begin{equation}
+    \left(\frac{cm}{m*m^2}\right)^{1/2}
+\end{equation}
+Incredibly, we must now convert the inverse cm to an inverse m. to get an a value of units 1/m and even more we must either convert the pm or the m to match each other to totally cancell the exponential's units. \newline
+Now that we have working values for the exponential we can move on to the front term, $hc\Tilde{D}_e$. Earlier we determined a $\Tilde{D}_e$ value in units of $cm^{-1}$. Clearly, this is not a compatible unit with Planck's constant and the speed of light, in fact it will yield a unit of hJ (that is, hecto Joule.) So finally, we can either convert the hJ to some other energy that is more typical, or we can report our potential energy in terms of hJ.\newline
+Needless to say, I do not understand Atkins motivation in this section for his choice of units. It is likely, that I am unaware of a simple trick that will yield quite simple conversions. This being said, it is likely that if I am unaware of this, so are many other students interested in learning physical chemistry. I would also like to note, the $hc\Tilde{D}_e$ value labelled as the depth of the minimum potential is \texit{not} the same $D_e$ value listed in the NIST Chemistry WebBook [2]. In fact, it seems that are completely different terms. One being labelled as the centrifugal distortion constant and the other the depth of the minimum potential (both in units of energy.)
+\end{tcolorbox}
+This potential function was plotted for HCl. This is shown in figure \ref{figure 2} along with several other traces with similar values, but varying the force constant of the function.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{Morse_Potential_for_HCl_k_f.png}
+\caption{Morse potential for HCl.}
+\label{figure 2}
+\end{figure}\newline
+As you can see, varying the force constant has quite similar results to the harmonic oscillator. As $k_f$ increases, the width of the potential well decreases. Figure \ref{figure 3} shows the variation of the equilibrium bond length. Once again, there is not much to be said here. The result is as expected. The plots are shifted as $R_e$ varies.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{Morse_Potential_for_HCl_R_e.png}
+\caption{Morse potential for HCl.}
+\label{figure 3}
+\end{figure}\newline
+In the student handout, it says to plot the Morse potential for HCl as E(R) vs. R. I am unsure of what this is asking, because the allowed energy levels are not dependent on the bond length and I do not have the Mathcad worksheet that has the information provided. I will proceed with the Morse potential function for $I_2$, which similar plots are displayed for in figure \ref{figure 4}. 
+\section{Iodine}
+Iodine is a violet crystalline solid with a metallic luster. Since it is colored violet we expect it to absorb in the 450nm-650nm range. In fact, we can calculate where an expected transition is using:
+\begin{equation}
+    \Tilde{G}(\nu)=(\nu+\frac{1}{2})\Tilde{\nu}-(\nu+\frac{1}{2})^2\chi_e\Tilde{\nu}
+\end{equation}. 
+and since the change in energy ($\Delta \Tilde{G}(\nu)$) from one state to a lower is going to be equal to the energy of a photon emitted from the atomic emission we can write:
+\begin{equation}
+    \Delta \Tilde{G}(\nu)=\left((\nu'+\frac{1}{2})\Tilde{\nu}-(\nu'+\frac{1}{2})^2\chi_e\Tilde{\nu}\right)-\left((\nu+\frac{1}{2})\Tilde{\nu}-(\nu+\frac{1}{2})^2\chi_e\Tilde{\nu}\right)
+\end{equation}
+The Franck-Condon principle states that the nuclei of atoms are so much more massive than the electrons that the electronic transitions take place much faster than the nuclei can respond. Similar to the Born-Oppenheimer because they are both using the fact that the nuclei are much larger than the electrons. 
+\section{Results and Analysis}
+Data for the spectrum of I2 was collected by adding a bit of $I_2$ to a cuvet and put into the heated spectrophotometer. Of course, only after a blank was read with the same settings. The $I_2$ was given time to heat and then data was taken. An analysis of this data was done in order to determine the minima that appeared from the spectral data. These minimum values correspond to electronic transitions and were determined in a Python script whose structure was written as such:\newline
+1) Smooth the spectral data using a convolve function\newline
+2) Determine a minimum and maximum absorbance value for the spectra\newline
+3) Set an arbitrary threshold for which you wish to classify minimums (.5\% and 1\% for $Br_2$ and $I_2$ respectively)\newline
+4) Iterate through each data point and stop if there is a possible minimum value (the initial minimum test was to check if the value before and after the current value are greater than the current value)\newline
+5) Read the prior data points in the threshold range before and after the minimum candidate\newline
+6) If the values do not begin decreasing before the threshold is reached, then this is a minimum\newline
+7) Add the threshold value to the prior iteration of the function\newline
+8) Continue until all minimums are found\newline
+9) Test these minimums to determine if they are within an arbitrary \% of one another\newline
+10) If they are, remove one of them and continue\newline
+This provides plots like the one in figure \ref{figure 4}. This method is by no means the most efficient, but will be able to determine, quite robustly, the local minimum values of a function. In fact, I also used the same script to determine these local minimum values for the $Br_2$ data provided. The plot for this is shown in figure \ref{figure 5}. As you can see the raw data is quite noisy and the convolve function does an excellent job smoothing this and allowing the minimizing script to function properly. While I do not boast my script being the most efficient, it does however have quite a short run time and can be applied to nearly any data set. Also, since it is not scanning every single data point in the set, but rather a threshold of values it is not such a brute-force method. If you are interested in my script I can email it to you commented out.\newline
+From these plots, I was able to obtain some wavelength values. These are included in table \ref{table 2}. These wavelengths can now be used in a Birge-Sponer plot. These plots form a linear function that can be integrated over all energy levels, ($\nu$), providing a value for the dissociation energy of your molecule. Why does this provide such a value? The reason is because the change in energy between each energy level is represented in the spectral data as a photonic emission. Each of these photonic emissions can be converted to an energy value and this sum will thereby allow a sum of each energy level up to the dissociation curve of the potential function. So I have made the Birge-Sponer plots and included them in figures \ref{figure 6} and \ref{figure 7}.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{I_2.png}
+\caption{Analysis of $I_2$ data.}
+\label{figure 4}
+\end{figure}\newline
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{Br_2.png}
+\caption{Analysis of $Br_2$ data.}
+\label{figure 5}
+\end{figure}\newline
+\begin{table}[!h]
+\centering
+\begin{tabular}{cccccccc}
+\rowcolor[HTML]{C0C0C0} 
+\multicolumn{2}{c}{\cellcolor[HTML]{C0C0C0}$I_2$} & \cellcolor[HTML]{EFEFEF} & \multicolumn{2}{c}{\cellcolor[HTML]{C0C0C0}$I_2$} & \cellcolor[HTML]{EFEFEF} & \multicolumn{2}{c}{\cellcolor[HTML]{C0C0C0}$Br_2$} \\
+\rowcolor[HTML]{C0C0C0} 
+W.l. (nm)                & A                      & \cellcolor[HTML]{EFEFEF} & W.l. (nm)                & A                      & \cellcolor[HTML]{EFEFEF} & W.l.                    & A                        \\
+\rowcolor[HTML]{EFEFEF} 
+638.3                    & 0.0138                 &                          & 549.44                   & 0.02431                &                          & 597.39                  & 0.08582                  \\
+\rowcolor[HTML]{EFEFEF} 
+634.2                    & 0.01356                &                          & 547.04                   & 0.02487                &                          & 594.43                  & 0.09435                  \\
+\rowcolor[HTML]{EFEFEF} 
+629.22                   & 0.01371                &                          & 544.49                   & 0.0252                 &                          & 592.8                   & 0.09558                  \\
+\rowcolor[HTML]{EFEFEF} 
+625.7                    & 0.01368                &                          & 542.24                   & 0.02587                &                          & 589.83                  & 0.10421                  \\
+\rowcolor[HTML]{EFEFEF} 
+621.29                   & 0.01384                &                          & 539.99                   & 0.02648                &                          & 585.53                  & 0.11407                  \\
+\rowcolor[HTML]{EFEFEF} 
+617.46                   & 0.01403                &                          & 537.74                   & 0.02663                &                          & 581.67                  & 0.12454                  \\
+\rowcolor[HTML]{EFEFEF} 
+613.78                   & 0.014                  &                          & 535.49                   & 0.02715                &                          & 578.25                  & 0.13663                  \\
+\rowcolor[HTML]{EFEFEF} 
+609.5                    & 0.01381                &                          & 533.68                   & 0.02716                &                          & 574.82                  & 0.14961                  \\
+\rowcolor[HTML]{EFEFEF} 
+605.52                   & 0.01386                &                          & 531.43                   & 0.02752                &                          & 570.95                  & 0.1642                   \\
+\rowcolor[HTML]{EFEFEF} 
+601.53                   & 0.01445                &                          & 529.77                   & 0.02796                &                          & 567.67                  & 0.18135                  \\
+\rowcolor[HTML]{EFEFEF} 
+597.68                   & 0.01482                &                          & 527.97                   & 0.02825                &                          & 564.24                  & 0.20087                  \\
+\rowcolor[HTML]{EFEFEF} 
+593.98                   & 0.01539                &                          & 526.31                   & 0.02811                &                          & 560.81                  & 0.22581                  \\
+\rowcolor[HTML]{EFEFEF} 
+590.57                   & 0.01556                &                          & 524.5                    & 0.0284                 &                          & 557.22                  & 0.25052                  \\
+\rowcolor[HTML]{EFEFEF} 
+586.72                   & 0.01607                &                          & 523                      & 0.02864                &                          & 554.38                  & 0.27061                  \\
+\rowcolor[HTML]{EFEFEF} 
+583                      & 0.01622                &                          & 520.28                   & 0.02893                &                          & 551.54                  & 0.2994                   \\
+\rowcolor[HTML]{EFEFEF} 
+579.73                   & 0.01678                &                          & 509.26                   & 0.02861                &                          & 549.44                  & 0.32266                  \\
+\rowcolor[HTML]{EFEFEF} 
+576.31                   & 0.01782                &                          &                          &                        &                          & 547.19                  & 0.33971                  \\
+\rowcolor[HTML]{EFEFEF} 
+573.19                   & 0.01866                &                          &                          &                        &                          & 544.64                  & 0.35794                  \\
+\rowcolor[HTML]{EFEFEF} 
+570.06                   & 0.0195                 &                          &                          &                        &                          & 542.39                  & 0.37782                  \\
+\rowcolor[HTML]{EFEFEF} 
+566.78                   & 0.01986                &                          &                          &                        &                          & 539.99                  & 0.40695                  \\
+\rowcolor[HTML]{EFEFEF} 
+563.79                   & 0.0211                 &                          &                          &                        &                          & 538.04                  & 0.44297                  \\
+\rowcolor[HTML]{EFEFEF} 
+560.51                   & 0.02178                &                          &                          &                        &                          & 535.04                  & 0.46616                  \\
+\rowcolor[HTML]{EFEFEF} 
+557.52                   & 0.02257                &                          &                          &                        &                          & 532.78                  & 0.4879                   \\
+\rowcolor[HTML]{EFEFEF} 
+554.68                   & 0.02296                &                          &                          &                        &                          & 530.98                  & 0.51773                  \\
+\rowcolor[HTML]{EFEFEF} 
+551.98                   & 0.02368                &                          &                          &                        &                          & 529.02                  & 0.54172                 
+\end{tabular}
+\label{table 2}
+\end{table}\clearpage
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{I_2_Birge_Sponer.png}
+\caption{$I_2$ Birge-Sponer plot with linear regression.}
+\label{figure 5}
+\end{figure}
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{Br_2_Birge_Sponer.png}
+\caption{$Br_2$ Birge-Sponer plot with linear regression.}
+\label{figure 6}
+\end{figure}
+From these plots, I determined a value for the dissociation energy  of each using both a linear regression and simply the intergral over all of the spacings. There results are tabulated in table \ref{table 3}.
+\begin{table}[!h]
+\centering
+\begin{tabular}{
+>{\columncolor[HTML]{C0C0C0}}c 
+>{\columncolor[HTML]{EFEFEF}}c 
+>{\columncolor[HTML]{EFEFEF}}c }
+                     & \cellcolor[HTML]{C0C0C0}$I_2$ & \cellcolor[HTML]{C0C0C0}$Br_2$ \\
+Raw Data ($cm^{-1}$) & 3467                          & 2178                           \\
+L.R. ($cm^{-1}$)     & 5809                          & 8189                          
+\end{tabular}
+\label{table 3}
+\end{table}
+While the Birge-Sponer method for determining the dissociation energy is a good approximation, we can see in certain molecules it does not tell the full story. In fact, the change in energies of a molecule is typically not exactly linear, especially near the tail end. A good example of this is BrO. BrO's changes in energy levels droops off near the higher energy levels and is not necessarily linear. Another method of approximating these dissociation energies is a method developed by LeRoy-Berstein. He discusses a theoretical justification in regards to this approximation. Once again, I will not derive this expression because it is out of the scope of this report, but his article discussing the theoretical significance of his approximation is in reference [3]. A plot showing the new approximation, the old, and the raw data, is shown in figure \ref{figure 7}.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=.5]{LEROYYYYYJENKINSSS.PNG}
+\caption{$BrO$ LeRoy-Berstein plot with linear regression for comparison.}
+\label{figure 7}
+\end{figure}\newline
+The new approximation yields a value that is closer to the emperical value given by NIST by approximately 5\%.
+\section{Conclusion}
+The methods used in this report show that the various approximation methods have a time and place to be used. In some molecules, the energy spacing is quite linear, and the Birge-Sponer plot can be used without much loss of accuracy. In others, however, this may not be the case. Also, the classical harmonic oscillator can only function as a potential function model for diatomic molecules if the internuclear separation is very small. These are all based in some theoretical grounding, though. So their use should only be for which the theoretical standard is set. The harmonic oscillator is not a bad approximation, unless used in the incorrect setting.\newline
+This lab has emphasized these various approximations, but unfortunately has lacked the theoretical basis for each. This is likely due to their complexity, but it is important to understand these underlying principles so that each approximation can be used appropriately.
+\section{Nomenclature}
+$\Tilde{D}_e$ $(J)$: Depth of the potential minimum\newline
+$\Tilde{D}_o$ $(J)$: Depth of potential from first energy state\newline
+$R_e$ $(m)$: Equilibrium bond length\newline
+$\Tilde{G}(\nu)$ $(J)$: Permitted energy levels \newline
+$\omega$ $(1/s)$: Angular frequency\newline
+$\Tilde{\nu}$ $(m^{-1})$: Vibrational constant\newline
+$h=6.626*10^{-34}$ $kgm^2/s$: Planck's constant\newline
+$c=3*10^8$ $m/s$: Speed of light\newline
+\section{References}
+[1] Costa Filho, Raimundo N. et al. “Morse Potential Derived from First Principles.” EPL (Europhysics Letters) 101.1 (2013): 10009. Crossref. Web.\newline
+[2] Hydrogen chloride. (n.d.). Retrieved December 13, 2019, from https://webbook.nist.gov/\newline
+cgi/cbook.cgi?ID=C7647010&Mask=1000.\newline
+[3] Leroy, R. J., & Bernstein, R. B. (1970). Dissociation Energy and Long‐Range Potential of Diatomic Molecules from Vibrational Spacings of Higher Levels. The Journal of Chemical Physics, 52(8), 3869–3879. doi: 10.1063/1.1673585\newline
+[4] National Institute of Standards and Technology. (2019, December 9). Retrieved from https://www.nist.gov/.
+\end{document}
